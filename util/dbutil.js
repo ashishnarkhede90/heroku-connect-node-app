@@ -12,6 +12,7 @@ var findLeads = function(cb) {
 
 	var tableName = process.env.LEAD_TABLE_NAME ? process.env.LEAD_TABLE_NAME : 'Lead';
 	var findQuery = 'Select * From ' + tableName;
+	console.log('*** findQuery: ' + findQuery);
 	postgres.client.query(findQuery)
 	.then(data => {
 		if (data != null && data.length > 0){
