@@ -42,7 +42,7 @@ var updateLeads = function(leadsToUpdate, cb) {
 	var updateQuery = pgp.helpers.update(dataMulti, cs, null, {tableAlias: 'X', valueAlias: 'Y'}) + ' WHERE Y.sfid = X.sfid';
 	console.log('*** updateQuery: '+updateQuery);
 
-	postgres.client.query(updateQuery)
+	postgres.client.none(updateQuery)
 	.then(data => {
 		cb(data, null);
 	})
