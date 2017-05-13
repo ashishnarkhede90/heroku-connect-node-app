@@ -38,8 +38,8 @@ var updateLeads = function(leadsToUpdate, cb) {
 	console.log('*** updateLeads');
 	// using helpers namespace to dynamically generate update query. This allows to easily update multiple records without performance hit
 	var dataMulti = leadsToUpdate;
-	var cs = new pgp.helpers.ColumnSet(['?id', 'approval_status__c', 'tier__c'], {table: 'lead'});
-	var updateQuery = pgp.helpers.update(dataMulti, cs, null, {tableAlias: 'X', valueAlias: 'Y'}) + ' WHERE Y.id = X.id';
+	var cs = new pgp.helpers.ColumnSet(['?sfid', 'approval_status__c', 'tier__c'], {table: 'lead'});
+	var updateQuery = pgp.helpers.update(dataMulti, cs, null, {tableAlias: 'X', valueAlias: 'Y'}) + ' WHERE Y.sfid = X.sfid';
 	console.log('*** updateQuery: '+updateQuery);
 
 	postgres.client.query(updateQuery)
