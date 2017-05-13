@@ -16,11 +16,11 @@ router.get('/', function(req, res, next) {
 router.put('/', function(req, res, next) {
 
 	var leadsToUpdate = req.body;
-	dbUtil.updateLeads(leadsToUpdate, function(err) {
+	dbUtil.updateLeads(leadsToUpdate, function(data, err) {
 		if(err) {
 			throw err;
 		}
-		res.end('Leads updated');
+		res.end('Leads updated: ' + data);
 	});
 
 });
