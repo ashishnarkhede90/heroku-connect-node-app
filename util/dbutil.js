@@ -36,9 +36,10 @@ var findLeads = function(cb) {
 */
 var updateLeads = function(leadsToUpdate, cb) {
 	console.log('*** updateLeads');
+	console.log(process.env);
 	// using helpers namespace to dynamically generate update query. This allows to easily update multiple records without performance hit
 	var dataMulti = leadsToUpdate;
-	var cs = new pgp.helpers.ColumnSet(['?sfid', 'approval_status__c', 'tier__c'], {table: process.env.LEAD_TABLE_NAME});
+	var cs = new pgp.helpers.ColumnSet(['?sfid', 'approval_status__c', 'tier__c'], {table: 'salesforce.lead'});
 	var updateQuery = pgp.helpers.update(dataMulti, cs, null, {tableAlias: 'X', valueAlias: 'Y'}) + ' WHERE Y.sfid = X.sfid';
 	console.log('*** updateQuery: '+updateQuery);
 
