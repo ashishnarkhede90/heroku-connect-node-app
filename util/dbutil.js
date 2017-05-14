@@ -7,19 +7,22 @@ var postgres = require('../lib/postgres.js');
 * Date: May 09, 2017
 * Descrition: Method to find records in postgres
 */
-var findLeads = function(cb) {
+var findLeads = function(leadName, cb) {
 	console.log('*** findLeads');
+	var whereClause;
 
 	var tableName = process.env.LEAD_TABLE_NAME ? process.env.LEAD_TABLE_NAME : 'Lead';
-	var findQuery = 'Select * From ' + tableName;
+	var findQuery = "Select * From " + tableName;
+	if(leadName != null){
+		whereClause = " WHERE Name LIKE '" + leadName + "%'"
+		findQuery += whereClause;
+	} 
+
 	console.log('*** findQuery: ' + findQuery);
 	postgres.client.query(findQuery)
 	.then(data => {
-		if (data != null && data.length > 0){
-			console.log(data.length);
-			if(cb) {
-				cb(data, null);
-			}
+		if(cb) {
+			cb(data, null);
 		}
 	})
 	.catch(error => {
@@ -39,8 +42,9 @@ var updateLeads = function(leadsToUpdate, cb) {
 	console.log(process.env);
 	// using helpers namespace to dynamically generate update query. This allows to easily update multiple records without performance hit
 	var dataMulti = leadsToUpdate;
-	var cs = new pgp.helpers.ColumnSet(['?sfid', 'approval_status__c', 'tier__c'], {table: 'salesforce.lead'});
+	var cs = new pgp.helpers.ColumnSet(['?sfid', 'approval_status__c', 'tier__c'], {table: process.env.LEAD_TABLE_NAME});
 	var updateQuery = pgp.helpers.update(dataMulti, cs, null, {tableAlias: 'X', valueAlias: 'Y'}) + ' WHERE Y.sfid = X.sfid';
+	// remove all the double quotes in the query string
 	updateQuery = updateQuery.replace(/["]+/g, '');
 	console.log('*** updateQuery: '+updateQuery);
 
@@ -57,7 +61,31 @@ var updateLeads = function(leadsToUpdate, cb) {
 //	cb();
 }
 
+var findLeadsByName = function(leadName, cb) {
+	
+	console.log('*** findLeadsByName');
+
+	if(leadNames != null) {
+		var findQuery = 'Select * from ' + process.env.LEAD_TABLE_NAME + ' where Name LIKE ' + leadName;
+		postgres.client.query(findQuery)
+		.then(data => {
+			if(cb) {
+				cb(data, null);
+			}
+		})
+		.catch(error => {
+			if(cb) {
+				cb(null, error);
+			}
+		});
+	} else {
+		return cb(null, null);
+	}
+
+}
+
 module.exports = {
 	findLeads: findLeads,
-	updateLeads: updateLeads
+	updateLeads: updateLeads,
+	findLeadsByName: findLeadsByName
 }

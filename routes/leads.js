@@ -4,8 +4,8 @@ var dbUtil = require('../util/dbutil');
 
 /* GET leads listing. */
 router.get('/', function(req, res, next) {
-
-	dbUtil.findLeads(function(data, err) {
+	var leadName = req.query.name;
+	dbUtil.findLeads(leadName, function(data, err) {
 
 		res.json(data);
 	});
@@ -23,6 +23,17 @@ router.put('/', function(req, res, next) {
 		res.end('Leads updated: ' + data);
 	});
 
+});
+
+// find lead records for a name provided in the query params
+router.get('/:name', function(req, res, next){
+	var leadName = req.query.name;
+	dbUtil.findLeadsByName(leadName, function(data, err) {
+		if(err){
+			throw err;
+		}
+		res.end(data);
+	});
 });
 
 module.exports = router;
