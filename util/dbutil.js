@@ -41,6 +41,7 @@ var updateLeads = function(leadsToUpdate, cb) {
 	var dataMulti = leadsToUpdate;
 	var cs = new pgp.helpers.ColumnSet(['?sfid', 'approval_status__c', 'tier__c'], {table: 'salesforce.lead'});
 	var updateQuery = pgp.helpers.update(dataMulti, cs, null, {tableAlias: 'X', valueAlias: 'Y'}) + ' WHERE Y.sfid = X.sfid';
+	updateQuery = updateQuery.replace('"', '');
 	console.log('*** updateQuery: '+updateQuery);
 
 	postgres.client.none(updateQuery)
