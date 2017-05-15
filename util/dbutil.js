@@ -12,14 +12,14 @@ var findLeads = function(leadName, cb) {
 	var whereClause;
 
 	var tableName = process.env.LEAD_TABLE_NAME ? process.env.LEAD_TABLE_NAME : 'Lead';
-	var findQuery = "Select * From " + tableName;
+	var findQuery = "Select * From " + tableName + ' where approval_status__c is ${status} AND expected_opportunity_type__c = ${oppType}';
 	if(leadName != null){
 		whereClause = " WHERE Name LIKE '" + leadName + "%'"
 		findQuery += whereClause;
 	} 
 
 	console.log('*** findQuery: ' + findQuery);
-	postgres.client.query(findQuery)
+	postgres.client.query(findQuery, { status: null, oppType: 'Speaker'})
 	.then(data => {
 		if(cb) {
 			cb(data, null);
@@ -39,7 +39,8 @@ var findLeads = function(leadName, cb) {
 */
 var updateLeads = function(leadsToUpdate, cb) {
 	console.log('*** updateLeads');
-	console.log(process.env);
+	console.log(leadsToUpdate);
+	
 	// using helpers namespace to dynamically generate update query. This allows to easily update multiple records without performance hit
 	var dataMulti = leadsToUpdate;
 	var cs = new pgp.helpers.ColumnSet(['?sfid', 'approval_status__c', 'tier__c'], {table: process.env.LEAD_TABLE_NAME});

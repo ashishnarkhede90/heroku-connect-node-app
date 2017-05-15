@@ -6,7 +6,9 @@ var dbUtil = require('../util/dbutil');
 router.get('/', function(req, res, next) {
 	var leadName = req.query.name;
 	dbUtil.findLeads(leadName, function(data, err) {
-
+		if(err) {
+			throw err;
+		}
 		res.json(data);
 	});
 
@@ -14,8 +16,8 @@ router.get('/', function(req, res, next) {
 
 // Update leads in the request body
 router.put('/', function(req, res, next) {
-
 	var leadsToUpdate = req.body;
+	
 	dbUtil.updateLeads(leadsToUpdate, function(data, err) {
 		if(err) {
 			throw err;
@@ -23,17 +25,6 @@ router.put('/', function(req, res, next) {
 		res.end('Leads updated: ' + data);
 	});
 
-});
-
-// find lead records for a name provided in the query params
-router.get('/:name', function(req, res, next){
-	var leadName = req.query.name;
-	dbUtil.findLeadsByName(leadName, function(data, err) {
-		if(err){
-			throw err;
-		}
-		res.end(data);
-	});
 });
 
 module.exports = router;
