@@ -29,6 +29,7 @@ $(function() {
     // bind on click event od update button to a function. onclick attribute on button tag won't work since the updateITems function is not in global context
     $('#btnUpdate').click(updateLeads);
 
+
     function updateLeads() {
         console.log(itemsToUpdate);
         var leadsToUpdate = [];
@@ -41,7 +42,8 @@ $(function() {
                 'company': itemsToUpdate[item]['Company'],
                 'approval_status__c': itemsToUpdate[item]['Approval Status'],
                 'tier__c': itemsToUpdate[item]['Tier'],
-                'sfid': itemsToUpdate[item]['sfid']
+                'sfid': itemsToUpdate[item]['sfid'],
+                'SendInvitationOnConversion__c': itemsToUpdate[item]['Send Invitation']
             }
             // format the data 
             if(l['approval_status__c'] == 0) {
@@ -104,7 +106,7 @@ $(function() {
                             'Approval Status': data[index].approval_status__c,
                             'Tier': data[index].tier__c,
                             'sfid': data[index].sfid,
-                            'Send Invitation': false
+                            'Send Invitation': true
                         }
 
                         if(l['Approval Status'] == null) {
