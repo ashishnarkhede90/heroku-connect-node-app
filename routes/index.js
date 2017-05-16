@@ -1,11 +1,12 @@
 var express = require('express');
 var dbutil = require('../util/dbutil');
+var authutil = require('../util/authutil');
 var router = express.Router();
 var jwt = require('jsonwebtoken');
 
 
 /* GET home page. */
-router.get('/', function(req, res, next) {
+router.get('/', authutil.isAuthenticated, function(req, res, next) {
   res.render('index', { title: 'WFEB 2017 Speaker Approval' });
 });
 

@@ -1,13 +1,19 @@
 var pgp = require('pg-promise')();
 var postgres = require('../lib/postgres.js');
+var jwt = require('jsonwebtoken');
 
 /**
 * Created By: Ashish N
 * Date: May 15, 2017
 * Descrition: Method to check if user is authenticated
 */
-var isAuthenticated = function() {
-
+var isAuthenticated = function(req, res, next) {
+	console.log('*** isAuthenticated');
+	validateRequest(req, res, function(decoded) {
+		if(decoded) {
+			next();
+		}
+	});
 }
 
 
@@ -30,7 +36,7 @@ var validateRequest = function(req, res, callback) {
 		  } else {
 		    // if everything is good, save to request for use in other routes
 		    req.decoded = decoded;    
-		    callback();
+		    callback(req.decoded);
 		  }
 		});
 
