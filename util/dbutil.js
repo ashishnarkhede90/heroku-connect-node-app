@@ -19,6 +19,7 @@ var findLeads = function(leadName, cb) {
 	} 
 
 	console.log('*** findQuery: ' + findQuery);
+
 	postgres.client.query(findQuery, { status: null, oppType: 'Speaker', isConverted: null, isConvertedBoolean: false})
 	.then(data => {
 		if(cb) {
@@ -97,9 +98,32 @@ var findSpeakerContacts = function(cb) {
 	})
 }
 
+/**
+* Created By: Ashish N
+* Date: May 15, 2017
+* Descrition: Method to find user records in postgres
+*/
+var findUser = function(user, cb) {
+	console.log('*** findUser');
+
+	var findQuery = 'Select * from User Where Email = ${email}';
+
+	postgres.client.query(findQuery, { email: user.email })
+	.then(data => {
+		if(cb) {
+			cb(data, null);
+		}
+	})
+	.catch(error => {
+		if(cb) {
+			cb(null, error);
+		}
+	});
+}
 
 module.exports = {
 	findLeads: findLeads,
 	updateLeads: updateLeads,
-	findSpeakerContacts: findSpeakerContacts
+	findSpeakerContacts: findSpeakerContacts,
+	findUser: findUser
 }
