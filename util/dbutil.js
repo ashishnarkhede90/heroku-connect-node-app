@@ -12,14 +12,14 @@ var findLeads = function(leadName, cb) {
 	var whereClause;
 
 	var tableName = process.env.LEAD_TABLE_NAME ? process.env.LEAD_TABLE_NAME : 'Lead';
-	var findQuery = "Select * From " + tableName + ' where approval_status__c is ${status} AND expected_opportunity_type__c = ${oppType} AND isconverted = ${isConverted}';
+	var findQuery = "Select * From " + tableName + ' where approval_status__c is ${status} AND expected_opportunity_type__c = ${oppType} AND (isconverted is ${isConverted} OR isconverted = ${isConvertedBoolean})';
 	if(leadName != null){
 		whereClause = " WHERE Name LIKE '" + leadName + "%'"
 		findQuery += whereClause;
 	} 
 
 	console.log('*** findQuery: ' + findQuery);
-	postgres.client.query(findQuery, { status: null, oppType: 'Speaker', isConverted: false})
+	postgres.client.query(findQuery, { status: null, oppType: 'Speaker', isConverted: null, isConvertedBoolean: false})
 	.then(data => {
 		if(cb) {
 			cb(data, null);
