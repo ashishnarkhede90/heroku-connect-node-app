@@ -5,7 +5,7 @@ var postgres = require('../lib/postgres.js');
 /**
 * Created By: Ashish N
 * Date: May 09, 2017
-* Descrition: Method to find records in postgres
+* Descrition: Method to find lead records from postgresdb
 */
 var findLeads = function(leadName, cb) {
 	console.log('*** findLeads');
@@ -14,7 +14,7 @@ var findLeads = function(leadName, cb) {
 	var tableName = process.env.LEAD_TABLE_NAME ? process.env.LEAD_TABLE_NAME : 'Lead';
 	var findQuery = "Select * From " + tableName + ' where approval_status__c is ${status} AND expected_opportunity_type__c = ${oppType} AND (isconverted is ${isConverted} OR isconverted = ${isConvertedBoolean})';
 	if(leadName != null){
-		whereClause = " WHERE Name LIKE '" + leadName + "%'"
+		whereClause = " AND Name LIKE '" + leadName + "%'"
 		findQuery += whereClause;
 	} 
 
@@ -35,7 +35,7 @@ var findLeads = function(leadName, cb) {
 /**
 * Created By: Ashish N
 * Date: May 09, 2017
-* Descrition: Method to update records in postgres
+* Descrition: Method to update lead records in postgres
 */
 var updateLeads = function(leadsToUpdate, cb) {
 	console.log('*** updateLeads');
@@ -62,7 +62,44 @@ var updateLeads = function(leadsToUpdate, cb) {
 //	cb();
 }
 
+/**
+* Created By: Ashish N
+* Date: May 15, 2017
+* Descrition: Method to find contact records in postgres
+*/
+var findSpeakerContacts = function(cb) {
+	console.log('*** findSpeakerContacts');
+
+	var whereClause = '';
+	var tableName = process.env.CONTACT_TABLE_NAME ? process.env.CONTACT_TABLE_NAME : 'Contact';
+
+	var contactRecordTypes = process.env.CONTACT_RECORD_TYPES;
+	contactRecordTypes = contactRecordTypes.split(',');
+
+	var findQuery = "Select * From " + tableName;
+
+	// if contact record type ids are provided in the config, filter the records
+	if(contactRecordTypes != null || contactRecordTypes instanceof Array) {
+		whereClause = " where RecordTypeId IN ${contactRecordTypeIds}";
+		findQuery += whereClause;
+	}
+
+	postgres.client.query(findQuery, { contactRecordTypeIds: contactRecordTypes })
+	.then(data => {
+		if(cb) {
+			cb(data, null);
+		}
+	})
+	.catch(error => {
+		if(cb) {
+			cb(null, error);
+		}
+	})
+}
+
+
 module.exports = {
 	findLeads: findLeads,
-	updateLeads: updateLeads
+	updateLeads: updateLeads,
+	findSpeakerContacts: findSpeakerContacts
 }

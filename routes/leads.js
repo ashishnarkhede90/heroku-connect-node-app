@@ -2,7 +2,7 @@ var express = require('express');
 var router = express.Router();
 var dbUtil = require('../util/dbutil');
 
-/* GET leads listing. */
+/* Get leads listing. */
 router.get('/', function(req, res, next) {
 	var leadName = req.query.name;
 	dbUtil.findLeads(leadName, function(data, err) {
@@ -26,5 +26,17 @@ router.put('/', function(req, res, next) {
 	});
 
 });
+
+// Get speaker contacts
+/*router.get('/speakers', function(req, res, next) {
+	dbUtil.findSpeakerContacts(function(data, err) {
+		if(err) {
+			throw err;
+		}
+		res.json(data);
+	});
+}); 
+*/
+
 
 module.exports = router;

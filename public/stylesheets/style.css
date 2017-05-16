@@ -15,3 +15,7 @@ a {
 button {
 	cursor: pointer;
 }
+
+#jsGrid {
+	margin-top: 2em;
+}
