@@ -103,7 +103,8 @@ $(function() {
                             'Company': data[index].company,
                             'Approval Status': data[index].approval_status__c,
                             'Tier': data[index].tier__c,
-                            'sfid': data[index].sfid
+                            'sfid': data[index].sfid,
+                            'Send Invitation': false
                         }
 
                         if(l['Approval Status'] == null) {
@@ -166,7 +167,7 @@ $(function() {
         editing: true,
         paging: true,
         autoload: true,
-        pageSize: 10,
+        pageSize: 15,
         confirmDeleting: false,
         controller: db,
         fields: [
@@ -184,12 +185,13 @@ $(function() {
                 align: "center",
                 width: 50
             },
+            { name: 'Send Invitation', type: "checkbox", align: "center", width: 50 },
             { name: "First Name", type: "text", width: 50, readOnly: true },
             { name: "Last Name", type: "text", width: 50,  validate: "required", readOnly: true },
-            { name: "Company", type: "text", width: 200, readOnly: true },
+            { name: "Company", type: "text", width: 100, readOnly: true },
             { name: "Approval Status", type: "select", items: approvalStatus, valueField: "Id", textField: "Name" },
             { name: "Tier", type: "select", items: tier, valueField: "Id", textField: "Name" },
-            { type: "control", deleteButton: false, editButton: false }
+            { name: "Save/Cancel", type: "control", deleteButton: false, editButton: true, width: 40 }
         ]
     });
 });
