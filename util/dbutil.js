@@ -12,14 +12,14 @@ var findLeads = function(leadName, cb) {
 	var whereClause;
 
 	var tableName = process.env.LEAD_TABLE_NAME ? process.env.LEAD_TABLE_NAME : 'Lead';
-	var findQuery = "Select * From " + tableName + ' where approval_status__c is ${status} AND expected_opportunity_type__c = ${oppType}';
+	var findQuery = "Select * From " + tableName + ' where approval_status__c is ${status} AND expected_opportunity_type__c = ${oppType} AND isconverted = ${isConverted}';
 	if(leadName != null){
 		whereClause = " WHERE Name LIKE '" + leadName + "%'"
 		findQuery += whereClause;
 	} 
 
 	console.log('*** findQuery: ' + findQuery);
-	postgres.client.query(findQuery, { status: null, oppType: 'Speaker'})
+	postgres.client.query(findQuery, { status: null, oppType: 'Speaker', isConverted: false})
 	.then(data => {
 		if(cb) {
 			cb(data, null);
@@ -62,31 +62,7 @@ var updateLeads = function(leadsToUpdate, cb) {
 //	cb();
 }
 
-var findLeadsByName = function(leadName, cb) {
-	
-	console.log('*** findLeadsByName');
-
-	if(leadNames != null) {
-		var findQuery = 'Select * from ' + process.env.LEAD_TABLE_NAME + ' where Name LIKE ' + leadName;
-		postgres.client.query(findQuery)
-		.then(data => {
-			if(cb) {
-				cb(data, null);
-			}
-		})
-		.catch(error => {
-			if(cb) {
-				cb(null, error);
-			}
-		});
-	} else {
-		return cb(null, null);
-	}
-
-}
-
 module.exports = {
 	findLeads: findLeads,
-	updateLeads: updateLeads,
-	findLeadsByName: findLeadsByName
+	updateLeads: updateLeads
 }
