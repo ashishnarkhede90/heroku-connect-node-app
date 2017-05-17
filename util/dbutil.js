@@ -106,17 +106,17 @@ var findSpeakerContacts = function(cb) {
 var findUser = function(user, cb) {
 	console.log('*** findUser');
 
-	var findQuery = 'Select * from User Where Email = ${email}';
+	var findQuery = 'Select * from users Where email = ${email}';
 
 	postgres.client.query(findQuery, { email: user.email })
 	.then(data => {
 		if(cb) {
-			cb(data, null);
+			cb(null, data);
 		}
 	})
 	.catch(error => {
 		if(cb) {
-			cb(null, error);
+			cb(error, null);
 		}
 	});
 }

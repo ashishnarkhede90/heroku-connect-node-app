@@ -13,7 +13,6 @@ router.get('/', authutil.isAuthenticated, function(req, res, next) {
 
 // route to authenticate users
 router.post('/authenticate', function(req, res, next) {
-
 	console.log(req.body);
 	
 	// find the user record using the user details received in authentication request
@@ -26,17 +25,17 @@ router.post('/authenticate', function(req, res, next) {
 			res.json( { success: false, message: 'Authentication failed. User not found'});
 		}
 		else if(user) {
+			
+			console.log(user instanceof Array);
+			user = user[0];
+			console.log(user);
 			// check if password matches
-			if(user.password != req.body.user) {
+			if(user.password != req.body.password) {
 				res.json({ success: false, message: 'Authentication failed. Wrong password.' });
 			}
 			else {
-				// create token if user is found and password is right
-				var signingSecret = process.env.SIGNING_SECRET;
-				var token = jwt.sign(user, signingSecret, {
-					expiresIn: 86400 // token expired in 24 hours
-				});
-
+				// create token
+				var token = authutil.createToken(user);
 				// return json object along with token
 				res.json({
 					success: true,
