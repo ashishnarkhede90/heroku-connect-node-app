@@ -17,7 +17,6 @@ var findLeads = function(leadName, cb) {
 		whereClause = " AND Name LIKE '" + leadName + "%'"
 		findQuery += whereClause;
 	} 
-
 	console.log('*** findQuery: ' + findQuery);
 
 	postgres.client.query(findQuery, { status: null, oppType: 'Speaker', isConverted: null, isConvertedBoolean: false})
@@ -40,7 +39,6 @@ var findLeads = function(leadName, cb) {
 */
 var updateLeads = function(leadsToUpdate, cb) {
 	console.log('*** updateLeads');
-	console.log(leadsToUpdate);
 	
 	// using helpers namespace to dynamically generate update query. This allows to easily update multiple records without performance hit
 	var dataMulti = leadsToUpdate;

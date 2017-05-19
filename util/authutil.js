@@ -9,6 +9,7 @@ var jwt = require('jsonwebtoken');
 * Descrition: Method to create json web token
 */
 var createToken = function(user) {
+	console.log('*** createToken');
 	// create token if user is found and password is right
 	var signingSecret = process.env.SIGNING_SECRET;
 	var token = jwt.sign(user, signingSecret, {
@@ -25,6 +26,7 @@ var createToken = function(user) {
 */
 var isAuthenticated = function(req, res, next) {
 	console.log('*** isAuthenticated');
+	
 	validateRequest(req, res, function(decoded) {
 		if(decoded) {
 			next();
@@ -40,12 +42,16 @@ var isAuthenticated = function(req, res, next) {
 */
 var validateRequest = function(req, res, callback) {
 	console.log('*** validateRequest');
-
+	// find the token which was provided as part of authetication in the request body, query or headers
 	var token = req.body.token || req.query.token || req.headers.authorization;
-	console.log(req.headers);
+	// check if the token exists in the cookie. This is for the first time this API is loaded on login
+	if(!token) {
+		token = req.cookies.accessToken;
+	} 
+
 	// decode token
 	if (token) {
-		console.log(token);
+		
 		// verifies secret and checks exp
 		jwt.verify(token, process.env.SIGNING_SECRET, function(err, decoded) {      
 		  if (err) {
@@ -53,7 +59,6 @@ var validateRequest = function(req, res, callback) {
 		  } 
 		  else {
 		  	console.log('Authentication successful.');
-		    console.log(decoded);
 		    // if everything is good, save to request for use in other routes
 		    req.decoded = decoded;    
 		    callback(req.decoded);
@@ -64,11 +69,13 @@ var validateRequest = function(req, res, callback) {
 
 		// if there is no token
 		// return an error
-		return res.status(403).send({ 
+		/*return res.status(403).send({ 
 		    success: false, 
 		    message: 'No token provided.' 
-		});
-
+		});*/
+		console.log('No token provided');
+		// render the login page if no token is provided by the client
+		res.render('signin', { title: 'Sign In' });
 	}
 }
 

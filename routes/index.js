@@ -7,13 +7,12 @@ var jwt = require('jsonwebtoken');
 
 /* GET home page. */
 router.get('/', authutil.isAuthenticated, function(req, res, next) {
-  res.render('index', { title: 'WFEB 2017 Speaker Approval' });
+	res.render('index', { title: 'WFEB 2017 Speaker Approval' });
+  //res.json({success: true});
 });
-
 
 // route to authenticate users
 router.post('/authenticate', function(req, res, next) {
-	console.log(req.body);
 	
 	// find the user record using the user details received in authentication request
 	dbutil.findUser(req.body, function(err, user) {
@@ -25,10 +24,7 @@ router.post('/authenticate', function(req, res, next) {
 			res.json( { success: false, message: 'Authentication failed. User not found'});
 		}
 		else if(user) {
-			
-			console.log(user instanceof Array);
 			user = user[0];
-			console.log(user);
 			// check if password matches
 			if(user.password != req.body.password) {
 				res.json({ success: false, message: 'Authentication failed. Wrong password.' });
@@ -36,6 +32,9 @@ router.post('/authenticate', function(req, res, next) {
 			else {
 				// create token
 				var token = authutil.createToken(user);
+				// set cookie in the response, this cookie will be used to authorize the first request to the app after login
+				// it will not (in any way) be used to authenticate a user
+				res.cookie('accessToken', token, { maxAge: 300000 });
 				// return json object along with token
 				res.json({
 					success: true,
