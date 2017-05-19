@@ -32,17 +32,6 @@ $(function(window) {
 
                 	//$(location).attr('href', '/?token=' + sessionStorage.getItem('accessToken'));
                 	$(location).attr('href', '/');
-                	/*
-                	$.ajax({
-			            type        : 'GET', // define the type of HTTP verb we want to use (POST for our form)
-			            url         : '/', // the url where we want to POST
-			            headers		: {'authorization': sessionStorage.getItem('accessToken')},
-			            dataType    : 'json', // what type of data do we expect back from the server,
-			            success 	: function(data, status) {
-			            	console.log(status);
-			            	$(location).attr('href', '/');
-			            }
-			        }); */
                 }
               	
             })

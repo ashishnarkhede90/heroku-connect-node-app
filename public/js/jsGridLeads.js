@@ -43,7 +43,7 @@ $(function() {
                 'approval_status__c': itemsToUpdate[item]['Approval Status'],
                 'tier__c': itemsToUpdate[item]['Tier'],
                 'sfid': itemsToUpdate[item]['sfid'],
-                'SendInvitationOnConversion__c': itemsToUpdate[item]['Send Invitation']
+                'sendinvitationonconversion__c': itemsToUpdate[item]['Send Invitation']
             }
             // format the data 
             if(l['approval_status__c'] == 0) {
