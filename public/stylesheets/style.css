@@ -19,3 +19,8 @@ button {
 #jsGrid {
 	margin-top: 2em;
 }
+
+.jsgrid-header-row>.jsgrid-header-cell {
+    background: orange;
+    color: white;
+}
