@@ -5,7 +5,7 @@ $(function() {
 
     var approvalStatus = [
         { Name: "-- None --", Id: 0 },
-        { Name: "Approve", Id: 1 },
+        { Name: "Approved", Id: 1 },
         { Name: "Deferred", Id: 2 }
     ];
 
