@@ -50,7 +50,7 @@ $(function() {
                 l['approval_status__c'] = null;
             }
             else if(l['approval_status__c'] == 1) {
-                l['approval_status__c'] = 'Approve';
+                l['approval_status__c'] = 'Approved';
             }
             else if(l['approval_status__c'] == 2) {
                 l['approval_status__c'] = 'Deferred';
