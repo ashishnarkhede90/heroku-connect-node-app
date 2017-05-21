@@ -70,16 +70,21 @@ $(function() {
             }
             leadsToUpdate.push(l);
         }
-        console.log(leadsToUpdate);
 
         $.ajax({
             type: "PUT",
             url: "/leads",
+            headers: { 'authorization': sessionStorage.getItem('accessToken') },
             contentType: 'application/json',
             data: JSON.stringify(leadsToUpdate),
-            success: function(data, status) {
-                console.log('Leads updated');
-                location.reload();
+            success: function(response, status) {
+                if(response.success && response.status == 200) {
+                    console.log('Leads updated');
+                    location.reload();
+                }
+                else if(!response.success && response.status == 403) {
+                    $(location).attr('href', '/error');
+                }
             },
             error: function(xhrObj, status, error) {
                 console.log(status + ': ' + error);
@@ -87,55 +92,67 @@ $(function() {
          });
     }
 
+    function mapIncomingLeadColumns(data) {
+        // format the data so that jsGrid displays it correctly
+        var leadsToApprove = []; // array to collect data to be displayed
+        for(var index in data) {
+            var l = {
+                'First Name': data[index].firstname,
+                'Last Name': data[index].lastname,
+                'Company': data[index].company,
+                'Approval Status': data[index].approval_status__c,
+                'Tier': data[index].tier__c,
+                'sfid': data[index].sfid,
+                'Send Invitation': true
+            }
+
+            if(l['Approval Status'] == null) {
+                l['Approval Status'] = 0;
+            } 
+            else if(l['Approval Status'] == 'Approve' || l['Approval Status'] == 'Approved') {
+                l['Approval Status'] = 1;
+            }
+            else if(l['Approval Status'] == 'Deferred') {
+                l['Approval Status'] = 2;
+            }
+
+            if(l['Tier'] == null) {
+                l['Tier'] = 0;
+            } 
+            else if(l['Tier'] == 'Tier 1') {
+                l['Tier'] = 1;
+            }
+            else if(l['Tier'] == 'Tier 2') {
+                l['Tier'] = 2;
+            } 
+            else if(l['Tier'] == 'Tier 3') {
+                l['Tier'] = 3;
+            } 
+
+            leadsToApprove.push(l);
+        }
+        return leadsToApprove;
+    }
+
+
     function getLeads() {
+        console.log('*** getLeads');
          // create a deferred object, resolve it once data receieved from server is formatted 
          var d = $.Deferred();
 
          $.ajax({
                 type: "GET",
                 url: "/leads",
-                success: function(data, status) {
-                    console.log('*** Leads received- Status: '+ status);
-                    // format the data so that jsGrid displays it correctly
-                    var leadsToApprove = []; // array to collect data to be displayed
-                    for(var index in data) {
-                        var l = {
-                            'First Name': data[index].firstname,
-                            'Last Name': data[index].lastname,
-                            'Company': data[index].company,
-                            'Approval Status': data[index].approval_status__c,
-                            'Tier': data[index].tier__c,
-                            'sfid': data[index].sfid,
-                            'Send Invitation': true
-                        }
-
-                        if(l['Approval Status'] == null) {
-                            l['Approval Status'] = 0;
-                        } 
-                        else if(l['Approval Status'] == 'Approve' || l['Approval Status'] == 'Approved') {
-                            l['Approval Status'] = 1;
-                        }
-                        else if(l['Approval Status'] == 'Deferred') {
-                            l['Approval Status'] = 2;
-                        }
-
-                        if(l['Tier'] == null) {
-                            l['Tier'] = 0;
-                        } 
-                        else if(l['Tier'] == 'Tier 1') {
-                            l['Tier'] = 1;
-                        }
-                        else if(l['Tier'] == 'Tier 2') {
-                            l['Tier'] = 2;
-                        } 
-                        else if(l['Tier'] == 'Tier 3') {
-                            l['Tier'] = 3;
-                        } 
-
-                        leadsToApprove.push(l);
+                headers: { 'authorization': sessionStorage.getItem('accessToken') },
+                success: function(response, status) {
+                    debugger;
+                    if(response.success && response.status == 200) {
+                        var leadsToApprove = mapIncomingLeadColumns(response.data);
+                        d.resolve(leadsToApprove);
                     }
-
-                    d.resolve(leadsToApprove);
+                    else if(!response.success && response.status == 403) {
+                        $(location).attr('href', '/error');
+                    }                    
                 },
                 error: function(xhrObj, status, error) {
                     console.log(status + ': ' + error);
@@ -181,7 +198,6 @@ $(function() {
                             .prop("checked", $.inArray(item, selectedItems) > -1)
                             .on("change", function () {
                                 $(this).is(":checked") ? selectItem(item) : unselectItem(item);
-
                             });
                 },
                 align: "center",
