@@ -56,7 +56,7 @@ var isAuthorized = function(req, res, next) {
 * Descrition: Method to validate request using token (if provided) in the request
 */
 var validateRequest = function(req, res, checkApiAccess, callback) {
-	console.log('*** validateRequest');
+	console.log('*** validateRequest: ' + checkApiAccess);
 	
 	var token;
 	// check if the token exists in the cookie. This is for the first time this API is loaded on login. This is not used to check if user has api access
@@ -70,6 +70,11 @@ var validateRequest = function(req, res, checkApiAccess, callback) {
 		console.log(req.headers.authorization);
 		token = req.body.token || req.headers.authorization;
 	} 
+
+	// if token is not found in the headers or body, fallback to cookie
+	if(checkApiAccess && (!token || (typeof token === 'string' && token == 'null'))) {
+		token = req.cookies.accessToken;
+	}
 
 	// decode token
 	if (token) {

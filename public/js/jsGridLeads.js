@@ -145,7 +145,6 @@ $(function() {
                 url: "/leads",
                 headers: { 'authorization': sessionStorage.getItem('accessToken') },
                 success: function(response, status) {
-                    debugger;
                     if(response.success && response.status == 200) {
                         var leadsToApprove = mapIncomingLeadColumns(response.data);
                         d.resolve(leadsToApprove);
