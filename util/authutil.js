@@ -67,7 +67,6 @@ var validateRequest = function(req, res, checkApiAccess, callback) {
 	// find the token which was provided as part of authetication in the request body, query or headers
 	else {
 		console.log('Checking API access');
-		console.log(req.headers.authorization);
 		token = req.body.token || req.headers.authorization;
 	} 
 
@@ -75,15 +74,19 @@ var validateRequest = function(req, res, checkApiAccess, callback) {
 	if(checkApiAccess && (!token || (typeof token === 'string' && token == 'null'))) {
 		token = req.cookies.accessToken;
 	}
-
+	console.log(token);
 	// decode token
 	if (token) {
 		// verifies secret and checks exp
 		jwt.verify(token, process.env.SIGNING_SECRET, function(err, decoded) {      
 		  if (err) {
 		  	console.log(err);
+		  	if(err.name == 'TokenExpiredError') {
+		  		console.log('Token expired');
+		  		res.json({'status': 403, 'success': false, 'message': 'Failed to authenticate token', 'reason': 'TokenExpired'});
+		  	}
 		    //return res.json({ success: false, message: 'Failed to authenticate token.', error: err });    
-		  	res.render('signin', { title: 'Sign In' });
+		  	//res.render('signin', { title: 'Sign In' });
 		  } 
 		  else {
 		  	console.log('Authentication successful.');
@@ -99,7 +102,7 @@ var validateRequest = function(req, res, checkApiAccess, callback) {
 		// if api authorization is being checked
 		if(checkApiAccess) {
 			console.log('No token provided');
-			res.json({'status': 403, 'success': false, 'message': 'No token provided'});
+			res.json({'status': 403, 'success': false, 'message': 'No token provided', 'reason':'MissingToken'});
 		}
 		else {
 			// render the login page if no token is provided by the client

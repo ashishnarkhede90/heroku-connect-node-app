@@ -43,7 +43,9 @@ $(function() {
                 'approval_status__c': itemsToUpdate[item]['Approval Status'],
                 'tier__c': itemsToUpdate[item]['Tier'],
                 'sfid': itemsToUpdate[item]['sfid'],
-                'sendinvitationonconversion__c': itemsToUpdate[item]['Send Invitation']
+                'sendinvitationonconversion__c': itemsToUpdate[item]['Send Invitation'],
+                'title': itemsToUpdate[item]['Title'],
+                'description': itemsToUpdate[item]['Description']
             }
             // format the data 
             if(l['approval_status__c'] == 0) {
@@ -103,7 +105,9 @@ $(function() {
                 'Approval Status': data[index].approval_status__c,
                 'Tier': data[index].tier__c,
                 'sfid': data[index].sfid,
-                'Send Invitation': true
+                'Send Invitation': true,
+                'Title': data[index].title,
+                'Description': data[index].description
             }
 
             if(l['Approval Status'] == null) {
@@ -200,14 +204,16 @@ $(function() {
                             });
                 },
                 align: "center",
-                width: 50
+                width: 20
             },
-            { name: 'Send Invitation', type: "checkbox", align: "center", width: 50 },
+            { name: 'Send Invitation', type: "checkbox", align: "center", width: 30 },
+            { name: 'Title', type: "text", align: "center", width: 30 },
             { name: "First Name", type: "text", width: 50, readOnly: true },
             { name: "Last Name", type: "text", width: 50,  validate: "required", readOnly: true },
-            { name: "Company", type: "text", width: 100, readOnly: true },
-            { name: "Approval Status", type: "select", items: approvalStatus, valueField: "Id", textField: "Name" },
-            { name: "Tier", type: "select", items: tier, valueField: "Id", textField: "Name" },
+            { name: "Company", type: "text", width: 50, readOnly: true },
+            { name: 'Description', type: "textarea", align: "center", width: 50 },
+            { name: "Approval Status", type: "select", width: 40, items: approvalStatus, valueField: "Id", textField: "Name" },
+            { name: "Tier", type: "select", width: 40, items: tier, valueField: "Id", textField: "Name" },
             { name: "Save/Cancel", type: "control", deleteButton: false, editButton: true, width: 40 }
         ]
     });
