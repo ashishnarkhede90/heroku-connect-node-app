@@ -64,26 +64,47 @@ var updateLeads = function(leadsToUpdate, cb) {
 /**
 * Created By: Ashish N
 * Date: May 15, 2017
-* Descrition: Method to find contact records in postgres
+* Descrition: Method to find contact records in postgres. Only the conact with sfId in contactIds are retrieved
 */
-var findSpeakerContacts = function(cb) {
+var findSpeakerContacts = function(cb, contactIdList) {
 	console.log('*** findSpeakerContacts');
 
 	var whereClause = '';
 	var tableName = process.env.CONTACT_TABLE_NAME ? process.env.CONTACT_TABLE_NAME : 'Contact';
 
-	var contactRecordTypes = process.env.CONTACT_RECORD_TYPES;
-	contactRecordTypes = contactRecordTypes.split(',');
-
 	var findQuery = "Select * From " + tableName;
 
 	// if contact record type ids are provided in the config, filter the records
-	if(contactRecordTypes != null || contactRecordTypes instanceof Array) {
-		whereClause = " where RecordTypeId IN ${contactRecordTypeIds}";
+	if(contactIdList != null || contactIdList instanceof Array) {
+		whereClause = " where sfid IN ${contactIds}";
 		findQuery += whereClause;
 	}
 
-	postgres.client.query(findQuery, { contactRecordTypeIds: contactRecordTypes })
+	postgres.client.query(findQuery, { contactIds: contactIdList })
+	.then(data => {
+		if(cb) {
+			cb(data, null);
+		}
+	})
+	.catch(error => {
+		if(cb) {
+			cb(null, error);
+		}
+	})
+}
+
+/**
+* Created By: Ashish N
+* Date: May 15, 2017
+* Descrition: Method to find OpportunityContactRole records in postgres
+*/
+var findOpportunityContactRoles = function() {
+	console.log('*** findSpeakerContacts');
+
+	var tableName = process.env.OPP_CONTACT_ROLE_TABLE ? process.env.OPP_CONTACT_ROLE_TABLE : 'OpportunityContactRole';
+	var findQuery = "Select OpportunityId, ContactId from " + tableName;
+
+	postgres.client.query(findQuery)
 	.then(data => {
 		if(cb) {
 			cb(data, null);
