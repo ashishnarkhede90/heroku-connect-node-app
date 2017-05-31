@@ -2,6 +2,7 @@ var express = require('express');
 var router = express.Router();
 var dbUtil = require('../util/dbutil');
 var authUtil = require('../util/authutil');
+var speakerUtil = require('../util/speakerutil');
 
 /* Get leads listing. */
 router.get('/', authUtil.isAuthorized, function(req, res, next) {
@@ -29,15 +30,15 @@ router.put('/', authUtil.isAuthorized, function(req, res, next) {
 });
 
 // Get speaker contacts
-/*router.get('/speakers', function(req, res, next) {
-	dbUtil.findSpeakerContacts(function(data, err) {
+router.get('/speakers', authUtil.isAuthorized, function(req, res, next) {
+	
+	speakerUtil.getSpeakerRecords(function(err, data) {
 		if(err) {
 			throw err;
 		}
-		res.json(data);
+		res.json({'status': 200, 'success': true, 'data': data});
 	});
 }); 
-*/
 
 
 module.exports = router;

@@ -7,18 +7,6 @@ $(function() {
         { Name: "Advisory Committee", Id: 3 },
     ];
 
-    function mapSpeakerRecords(data) {
-       // format the data so that jsGrid displays it correctly
-        var leadsToApprove = []; // array to collect data to be displayed
-        for(var index in data) {
-            var l = {
-                'First Name': data[index].firstname,
-                'Last Name': data[index].lastname,
-                'Invitee Type': data[index].type
-            }
-        }
-    }
-
     function getSpeakers() {
         console.log('*** getSpeakers');
          // create a deferred object, resolve it once data receieved from server is formatted 
@@ -26,12 +14,11 @@ $(function() {
 
          $.ajax({
                 type: "GET",
-                url: "/speakers",
+                url: "/leads/speakers",
                 headers: { 'authorization': sessionStorage.getItem('accessToken') },
                 success: function(response, status) {
                     if(response.success && response.status == 200) {
-                        var speakerList = mapSpeakerRecords(response.data);
-                        d.resolve(speakerList);
+                        d.resolve(response.data);
                     }
                     else if(!response.success && response.status == 403) {
                         $(location).attr('href', '/error');
@@ -53,10 +40,8 @@ $(function() {
     }
 
     $("#jsGrid").jsGrid({
-        height: "70%",
+        //height: "70%",
         width: "100%",
-        filtering: false,
-        inserting: false,
         editing: false,
         sorting: true,
         paging: true,

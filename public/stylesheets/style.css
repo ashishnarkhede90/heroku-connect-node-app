@@ -24,3 +24,16 @@ button {
     background: orange;
     color: white;
 }
+
+.speakerList {
+	text-align: right
+}
+
+.speakerList > a {
+	color: orange
+}
+
+.speakerList > a:hover {
+	color: #00B7FF
+	/*#00B7FF*/
+}

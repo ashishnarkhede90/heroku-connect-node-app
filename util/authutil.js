@@ -83,10 +83,13 @@ var validateRequest = function(req, res, checkApiAccess, callback) {
 		  	console.log(err);
 		  	if(err.name == 'TokenExpiredError') {
 		  		console.log('Token expired');
-		  		res.json({'status': 403, 'success': false, 'message': 'Failed to authenticate token', 'reason': 'TokenExpired'});
+		  		//res.json({'status': 403, 'success': false, 'message': 'Failed to authenticate token', 'reason': 'TokenExpired'});
+		  		res.render('signin', { title: 'Sign In' });
 		  	}
-		    //return res.json({ success: false, message: 'Failed to authenticate token.', error: err });    
-		  	//res.render('signin', { title: 'Sign In' });
+		  	else {
+				return res.json({ success: false, message: 'Failed to authenticate token.', error: err });    		  		
+		  	}
+		    
 		  } 
 		  else {
 		  	console.log('Authentication successful.');

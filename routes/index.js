@@ -11,6 +11,11 @@ router.get('/', authutil.isAuthenticated, function(req, res, next) {
   //res.json({success: true});
 });
 
+router.get('/speakers', authutil.isAuthenticated, function(req, res, next) {
+	res.render('speakers', { title: 'WFEB 2017 Speakers' });
+  //res.json({success: true});
+});
+
 
 // Error page
 router.get('/error', authutil.isAuthenticated, function(req, res, next) {
