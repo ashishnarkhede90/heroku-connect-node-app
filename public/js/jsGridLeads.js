@@ -211,7 +211,7 @@ $(function() {
             { name: "First Name", type: "text", width: 50, readOnly: true },
             { name: "Last Name", type: "text", width: 50,  validate: "required", readOnly: true },
             { name: "Company", type: "text", width: 50, readOnly: true },
-            { name: 'Description', type: "textarea", align: "center", width: 50 },
+            { name: 'Description', type: "textarea", align: "center", width: 200 },
             { name: "Approval Status", type: "select", width: 40, items: approvalStatus, valueField: "Id", textField: "Name" },
             { name: "Tier", type: "select", width: 40, items: tier, valueField: "Id", textField: "Name" },
             { name: "Save/Cancel", type: "control", deleteButton: false, editButton: true, width: 40 }
