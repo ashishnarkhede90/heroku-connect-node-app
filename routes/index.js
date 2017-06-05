@@ -12,7 +12,7 @@ router.get('/', authutil.isAuthenticated, function(req, res, next) {
 });
 
 router.get('/speakers', authutil.isAuthenticated, function(req, res, next) {
-	res.render('speakers', { title: 'WFEB 2017 Speakers' });
+	res.render('speakers', { title: 'Approved Speakers' });
   //res.json({success: true});
 });
 

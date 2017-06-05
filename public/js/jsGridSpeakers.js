@@ -50,9 +50,11 @@ $(function() {
         pageButtonCount: 5,
         controller: db,
         fields: [
-            { name: "First Name", type: "text", width: 150 },
-            { name: "Last Name", type: "text", width: 150 },
-            { name: "Invitee Type", type: "text", width: 150 },
+            { name: "First Name", type: "text", width: 50 },
+            { name: "Last Name", type: "text", width: 50 },
+            { name: "Title", type: "text", width: 50},
+            { name: "Company", type: "text", width: 50},
+            { name: "Stage", type: "text", width: 50 }
         ]
     });
     

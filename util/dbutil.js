@@ -73,7 +73,7 @@ var findSpeakerContacts = function(contactIdList, cb) {
 	var whereClause = '';
 	var tableName = process.env.CONTACT_TABLE_NAME ? process.env.CONTACT_TABLE_NAME : 'Contact';
 
-	var findQuery = "Select sfid, FirstName, LastName From " + tableName;
+	var findQuery = "Select c.sfid, c.FirstName, c.LastName, c.Title, c.AccountId, a.Name as AccountName From " + tableName + ' as c, Account as a Where c.AccountId = a.sfid AND ';
 
 	var params = [];
 	for(var i = 1; i <= contactIdList.length; i++) {
@@ -82,7 +82,7 @@ var findSpeakerContacts = function(contactIdList, cb) {
 
 	// if contact record type ids are provided in the config, filter the records
 	if(contactIdList != null && contactIdList instanceof Array) {
-		whereClause = " Where sfid IN (" + params.join(',') + ')';
+		whereClause = " c.sfid IN (" + params.join(',') + ')';
 		findQuery += whereClause;
 	}
 
@@ -91,6 +91,7 @@ var findSpeakerContacts = function(contactIdList, cb) {
 	postgres.client.query(findQuery, contactIdList)
 	.then(data => {
 		if(cb) {
+			console.log(data);
 			cb(data, null);
 		}
 	})
@@ -154,7 +155,7 @@ var findOpportunities = function(cb) {
 	var tableName = process.env.OPP_TABLE_NAME ? process.env.OPP_TABLE_NAME : 'Opportunity';
 	var speakerRecTypeId = process.env.OPP_SPEAKER_RT_ID;
 
-	var findQuery = "Select sfid, type from " + tableName;
+	var findQuery = "Select sfid, type, stagename from " + tableName;
 
 	if(speakerRecTypeId) {
 		whereClause += " AND RecordTypeId = ${speakerRecType}";

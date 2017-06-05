@@ -81,7 +81,7 @@ $(function() {
             data: JSON.stringify(leadsToUpdate),
             success: function(response, status) {
                 if(response.success && response.status == 200) {
-                    console.log('Leads updated');
+                    console.log('Leads updated'); 
                     location.reload();
                 }
                 else if(!response.success && response.status == 403) {
@@ -178,7 +178,11 @@ $(function() {
             console.log(this);
             //console.log('Item to update: ' + JSON.stringify(item));
             itemsToUpdate.push(item);
+        },
+        editItem: function(item) {
+            console.log(item);
         }
+
     }
     
    var config = $('#jsGrid').jsGrid({
@@ -193,7 +197,7 @@ $(function() {
         confirmDeleting: false,
         controller: db,
         fields: [
-            {
+            /*{
                 headerTemplate: function() { return "Select" },
 
                 itemTemplate: function(_, item) {
@@ -205,13 +209,13 @@ $(function() {
                 },
                 align: "center",
                 width: 20
-            },
+            }, */
             { name: 'Send Invitation', type: "checkbox", align: "center", width: 30 },
             { name: 'Title', type: "text", align: "center", width: 30 },
             { name: "First Name", type: "text", width: 50, readOnly: true },
             { name: "Last Name", type: "text", width: 50,  validate: "required", readOnly: true },
             { name: "Company", type: "text", width: 50, readOnly: true },
-            { name: 'Description', type: "textarea", align: "center", width: 200 },
+            { name: 'Description', type: "textarea", align: "center", width: 160 },
             { name: "Approval Status", type: "select", width: 40, items: approvalStatus, valueField: "Id", textField: "Name" },
             { name: "Tier", type: "select", width: 40, items: tier, valueField: "Id", textField: "Name" },
             { name: "Save/Cancel", type: "control", deleteButton: false, editButton: true, width: 40 }
