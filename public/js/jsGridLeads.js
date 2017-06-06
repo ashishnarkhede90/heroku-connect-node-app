@@ -82,7 +82,11 @@ $(function() {
             success: function(response, status) {
                 if(response.success && response.status == 200) {
                     console.log('Leads updated'); 
-                    location.reload();
+                    $('#status-modal').modal('show');
+                    window.setTimeout(function() {
+                        location.reload();
+                    }, 1500);
+                    //location.reload();
                 }
                 else if(!response.success && response.status == 403) {
                     $(location).attr('href', '/error');

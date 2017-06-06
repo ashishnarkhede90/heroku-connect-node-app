@@ -92,7 +92,6 @@ var findSpeakerContacts = function(contactIdList, cb) {
 	postgres.client.query(findQuery, contactIdList)
 	.then(data => {
 		if(cb) {
-			console.log(data);
 			cb(data, null);
 		}
 	})

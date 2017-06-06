@@ -37,3 +37,12 @@ button {
 	color: #00B7FF
 	/*#00B7FF*/
 }
+
+.status-modal-header {
+	padding: 10px;
+
+}
+
+.status-modal-content {
+	border-radius: 0
+}
