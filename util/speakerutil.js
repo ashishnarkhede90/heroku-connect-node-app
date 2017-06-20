@@ -70,14 +70,14 @@ function findOppIdForContact(oppContactRoles, contactId) {
 
 function findOpportunityStage(oppList, oppId) {
 	
-	var oppType;
+	var oppStage;
 	for (var i=0; i<oppList.length; i++) {
 		if(oppId == oppList[i]['sfid']) {
-			oppType = oppList[i]['stagename'];
+			oppStage = oppList[i]['stagename'];
 			break;
 		}
 	}
-	return oppType;
+	return oppStage;
 }
 
 function getSpeakerRecords(cb) {
@@ -98,17 +98,18 @@ function getSpeakerRecords(cb) {
 		for(var i=0; i<contacts.length; i++) {
 			var contactId = contacts[i]['sfid'];
 			var oppId = findOppIdForContact(oppContactRoles, contactId);
-			var oppType = findOpportunityStage(oppList, oppId);
+			var oppStage = findOpportunityStage(oppList, oppId);
 
 			var speaker = {
-				'First Name': contacts[i]['firstname'],
-				'Last Name': contacts[i]['lastname'],
-				'Stage': oppType,
+				'Name': contacts[i]['name'],
+				'Stage': oppStage,
 				'Title': contacts[i]['title'],
-				'Company': contacts[i]['accountname']
+				'Company': contacts[i]['accountname'],
+				'LastModifiedDate': contacts[i]['lastmodifieddate']
 			};
 
 			speakerContacts.push(speaker);
+			console.log(speakerContacts);
 		}
 
 		if(cb) {

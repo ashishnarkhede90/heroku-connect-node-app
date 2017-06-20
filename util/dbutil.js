@@ -74,7 +74,7 @@ var findSpeakerContacts = function(contactIdList, cb) {
 	var contactTableName = process.env.CONTACT_TABLE_NAME ? process.env.CONTACT_TABLE_NAME : 'Contact';
 	var accountTableName = process.env.ACCOUNT_TABLE_NAME ? process.env.ACCOUNT_TABLE_NAME : 'Account';
 
-	var findQuery = "Select c.sfid, c.FirstName, c.LastName, c.Title, c.AccountId, a.Name as AccountName From " + contactTableName + ' as c,' + accountTableName + ' as a Where c.AccountId = a.sfid AND ';
+	var findQuery = "Select c.sfid, c.Name, c.Title, c.AccountId, c.LastModifiedDate, a.Name as AccountName From " + contactTableName + ' as c,' + accountTableName + ' as a Where c.AccountId = a.sfid AND ';
 
 	var params = [];
 	for(var i = 1; i <= contactIdList.length; i++) {
@@ -86,6 +86,8 @@ var findSpeakerContacts = function(contactIdList, cb) {
 		whereClause = " c.sfid IN (" + params.join(',') + ')';
 		findQuery += whereClause;
 	}
+
+	findQuery += ' Order By LastModifiedDate DESC';
 
 	console.log('*** findQuery: ' + findQuery);
 
@@ -160,6 +162,8 @@ var findOpportunities = function(cb) {
 	if(speakerRecTypeId) {
 		whereClause += " AND RecordTypeId = ${speakerRecType}";
 	}
+
+	findQuery += ' Order By LastModifiedDate DESC';
 
 	postgres.client.query(findQuery, {speakerRecType: speakerRecTypeId})
 	.then(data => {

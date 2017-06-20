@@ -35,10 +35,8 @@ $(function() {
         var leadsToUpdate = [];
 
         for (item in itemsToUpdate) {
-            //console.log(itemsToUpdate[item]['First Name']);
             var l = {
-                'firstname': itemsToUpdate[item]['First Name'],
-                'lastname': itemsToUpdate[item]['Last Name'],
+                'name': itemsToUpdate[item]['Name'],
                 'company': itemsToUpdate[item]['Company'],
                 'approval_status__c': itemsToUpdate[item]['Approval Status'],
                 'tier__c': itemsToUpdate[item]['Tier'],
@@ -103,8 +101,7 @@ $(function() {
         var leadsToApprove = []; // array to collect data to be displayed
         for(var index in data) {
             var l = {
-                'First Name': data[index].firstname,
-                'Last Name': data[index].lastname,
+                'Name': data[index].name,
                 'Company': data[index].company,
                 'Approval Status': data[index].approval_status__c,
                 'Tier': data[index].tier__c,
@@ -216,10 +213,9 @@ $(function() {
             }, */
             { name: 'Send Invitation', type: "checkbox", align: "center", width: 30 },
             { name: 'Title', type: "text", align: "center", width: 30 },
-            { name: "First Name", type: "text", width: 50, readOnly: true },
-            { name: "Last Name", type: "text", width: 50,  validate: "required", readOnly: true },
-            { name: "Company", type: "text", width: 50, readOnly: true },
-            { name: 'Description', type: "textarea", align: "center", width: 160 },
+            { name: "Name", type: "text", width: 50, readOnly: true },
+            { name: "Company", type: "text", width: 80, readOnly: true },
+            { name: 'Description', type: "textarea", align: "center", width: 140 },
             { name: "Approval Status", type: "select", width: 40, items: approvalStatus, valueField: "Id", textField: "Name" },
             { name: "Tier", type: "select", width: 40, items: tier, valueField: "Id", textField: "Name" },
             { name: "Save/Cancel", type: "control", deleteButton: false, editButton: true, width: 40 }

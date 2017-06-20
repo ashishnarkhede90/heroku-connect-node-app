@@ -17,8 +17,16 @@ $(function() {
                 url: "/leads/speakers",
                 headers: { 'authorization': sessionStorage.getItem('accessToken') },
                 success: function(response, status) {
+                    console.log(response.data);
                     if(response.success && response.status == 200) {
-                        d.resolve(response.data);
+                        var speakers = response.data;
+                        speakers.sort(function(a,b){
+                          // Turn your strings into dates, and then subtract them
+                          // to get a value that is either negative, positive, or zero.
+                          return new Date(b.LastModifiedDate) - new Date(a.LastModifiedDate);
+                        });
+                        d.resolve(speakers);
+                        console.log(speakers);
                     }
                     else if(!response.success && response.status == 403) {
                         $(location).attr('href', '/error');
@@ -43,18 +51,17 @@ $(function() {
         //height: "70%",
         width: "100%",
         editing: false,
-        sorting: true,
+        sorting: false,
         paging: true,
         autoload: true,
         pageSize: 10,
         pageButtonCount: 5,
         controller: db,
         fields: [
-            { name: "First Name", type: "text", width: 50 },
-            { name: "Last Name", type: "text", width: 50 },
+            { name: "Name", type: "text", width: 50 },
             { name: "Title", type: "text", width: 50},
             { name: "Company", type: "text", width: 50},
-            { name: "Stage", type: "text", width: 50 }
+            { name: "Stage", type: "text", width: 50}
         ]
     });
     
