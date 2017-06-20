@@ -51,7 +51,7 @@ $(function() {
         //height: "70%",
         width: "100%",
         editing: false,
-        sorting: false,
+        sorting: true,
         paging: true,
         autoload: true,
         pageSize: 10,
