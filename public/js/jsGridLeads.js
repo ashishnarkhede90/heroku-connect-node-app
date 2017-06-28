@@ -227,14 +227,14 @@ $(function() {
                 align: "center",
                 width: 20
             }, */
-            { name: 'Send Invitation', type: "checkbox", align: "center", width: 30 },
-            { name: 'Title', type: "text", align: "center", width: 30 },
+            { name: 'Send Invitation', type: "checkbox", align: "center", width: 30, filtering: false },
             { name: "Name", autosearch: true, type: "text", width: 50, readOnly: false, filtering: true },
-            { name: "Company", type: "text", width: 80, readOnly: true },
-            { name: 'Description', type: "textarea", align: "center", width: 140 },
-            { name: "Approval Status", type: "select", width: 40, items: approvalStatus, valueField: "Id", textField: "Name" },
-            { name: "Tier", type: "select", width: 40, items: tier, valueField: "Id", textField: "Name" },
-            { name: "Save/Cancel", type: "control", deleteButton: false, editButton: true, width: 40 }
+            { name: 'Title', type: "text", align: "center", width: 30, filtering: false },
+            { name: "Company", type: "text", width: 80, readOnly: true, filtering: false },
+            { name: 'Description', type: "textarea", align: "center", width: 140, filtering: false },
+            { name: "Approval Status", type: "select", width: 40, items: approvalStatus, valueField: "Id", textField: "Name", filtering: false },
+            { name: "Tier", type: "select", width: 40, items: tier, valueField: "Id", textField: "Name", filtering: false },
+            { name: "Save/Cancel", type: "control", deleteButton: false, editButton: true, width: 40, filtering: false }
         ]
     });
 });
