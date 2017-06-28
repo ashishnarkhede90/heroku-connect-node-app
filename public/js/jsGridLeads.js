@@ -158,7 +158,10 @@ $(function() {
                         // filter the records if filter value is specified
                         if(filter.Name) {
                             for(var i=0; i<leadsToApprove.length; i++) {
-                                if( leadsToApprove[i].Name.indexOf(filter.Name) > -1 ) {
+                                var leadName = leadsToApprove[i].Name.toLowerCase();
+                                var searchKey = filter.Name.toLowerCase();
+
+                                if( leadName.indexOf(searchKey) > -1 ) {
                                     filterdLeads.push(leadsToApprove[i]);
                                 }
                             }
